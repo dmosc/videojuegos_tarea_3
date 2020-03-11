@@ -10,14 +10,14 @@ import java.awt.event.KeyListener;
 
 /**
  *
- * @author antoniomejorado
+ * @author Ernesto García
  */
 public class KeyManager implements KeyListener {
     
-    public boolean Q;
-    public boolean P;
-    public boolean A;
-    public boolean L;
+    public boolean RIGHT;
+    public boolean LEFT;
+    public boolean UP;
+    public boolean DOWN;
 
     private boolean keys[];  // to store all the flags for every key
     
@@ -45,9 +45,9 @@ public class KeyManager implements KeyListener {
      * to enable or disable moves on every tick
      */
     public void tick() {
-        Q = keys[KeyEvent.VK_Q];
-        P = keys[KeyEvent.VK_P];
-        A = keys[KeyEvent.VK_A];
-        L = keys[KeyEvent.VK_L];
+        RIGHT = keys[KeyEvent.VK_RIGHT];
+        LEFT = keys[KeyEvent.VK_LEFT];
+        UP = keys[KeyEvent.VK_UP];
+        DOWN = keys[KeyEvent.VK_DOWN];
     }
 }
