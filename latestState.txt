@@ -1,0 +1,15 @@
+[g] maxEnemies:9
+[g] maxAllies:10
+[g] enemiesCollide:0
+[p] direction:1 lives:3 points:25 speed:5 x:75 y:195 width:100 height:100
+[e] speed:3 x:155 y:469 width:50 height:50
+[e] speed:4 x:188 y:30 width:50 height:50
+[e] speed:3 x:509 y:393 width:50 height:50
+[e] speed:5 x:470 y:60 width:50 height:50
+[e] speed:4 x:728 y:198 width:50 height:50
+[a] speed:1 x:445 y:458 width:50 height:50
+[a] speed:1 x:294 y:39 width:50 height:50
+[a] speed:3 x:660 y:143 width:50 height:50
+[a] speed:2 x:278 y:67 width:50 height:50
+[a] speed:3 x:192 y:80 width:50 height:50
+[a] speed:2 x:38 y:40 width:50 height:50
