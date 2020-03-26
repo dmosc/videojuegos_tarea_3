@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
  */
 public class Assets {
     public static BufferedImage background;             // to store background image
-    public static BufferedImage playerSprites[];        // to store the player image
-    public static BufferedImage player[][];             // to store the player image
+    public static BufferedImage[] playerSprites;        // to store the player image
+    public static BufferedImage[][] player;             // to store the player image
     public static BufferedImage enemy;                  // to store the enemy image
     public static BufferedImage ally;                   // to store the ally image
     public static BufferedImage gameOver;               // to store the game over image
@@ -40,12 +40,12 @@ public class Assets {
             player[i] = new BufferedImage[9];
         }
 
-        SpriteSheet playerSpriteSheets[] = new SpriteSheet[5];
+        SpriteSheet[] playerSpriteSheets = new SpriteSheet[5];
         for (int i = 0; i < 5; i++) {
             playerSpriteSheets[i] = new SpriteSheet(playerSprites[i]);
         }
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 9; j++) {
                 player[i][j] = playerSpriteSheets[i].crop(j * 64, 0, 64, 64);
             }

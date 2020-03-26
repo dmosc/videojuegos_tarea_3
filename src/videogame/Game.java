@@ -7,21 +7,24 @@ package videogame;
 
 import javafx.util.Duration;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * @author Ernesto García
  */
 public class Game implements Runnable {
+    public static final String saveFileName = "latestState.txt";
+    String title;                           // title of the window
     private BufferStrategy bs;              // to have several buffers when displaying
     private Graphics g;                     // to paint objects
     private Display display;                // to display in the game
-    String title;                           // title of the window
     private int width;                      // width of the window
     private int height;                     // height of the window
     private Thread thread;                  // thread to create the game
@@ -79,6 +82,15 @@ public class Game implements Runnable {
     }
 
     /**
+     * Set enemiesCollide value
+     *
+     * @param enemiesCollide to modify
+     */
+    public void setEnemiesCollide(int enemiesCollide) {
+        this.enemiesCollide = enemiesCollide;
+    }
+
+    /**
      * To get the player of the game
      *
      * @return an <code>Player</code> value with the player
@@ -103,15 +115,6 @@ public class Game implements Runnable {
      */
     public void setLastAllySpawn(int lastAllySpawn) {
         this.lastAllySpawn = lastAllySpawn;
-    }
-
-    /**
-     * Set enemiesCollide value
-     *
-     * @param enemiesCollide to modify
-     */
-    public void setEnemiesCollide(int enemiesCollide) {
-        this.enemiesCollide = enemiesCollide;
     }
 
     /**
@@ -166,6 +169,16 @@ public class Game implements Runnable {
 
     private void tick() {
         keyManager.tick();
+        if (keyManager.P) {
+            return;
+        }
+        if (keyManager.G) {
+            saveState();
+        }
+        if (keyManager.C) {
+            loadState();
+        }
+
         player.tick();
 
         if (lastEnemySpawn > 0) {
@@ -241,8 +254,8 @@ public class Game implements Runnable {
             g.setColor(Color.WHITE);
             Font font = new Font("Agency FB", Font.BOLD, 22);
             g.setFont(font);
-            g.drawString("Vidas: " + player.getLives(), 10, getHeight() - 20);
-            g.drawString("Puntos: " + player.getPoints(), getWidth() - 100, getHeight() - 20);
+            g.drawString("Vidas: " + player.getLives(), 100, getHeight() - 20);
+            g.drawString("Puntos: " + player.getPoints(), getWidth() - 400, getHeight() - 20);
             player.render(g);
 
             for (Enemy enemy : enemyList) {
@@ -284,5 +297,116 @@ public class Game implements Runnable {
         }
     }
 
+    public void saveState() {
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter(saveFileName));
+            writer.println("[g] maxEnemies:" + maxEnemies);
+            writer.println("[g] maxAllies:" + maxAllies);
+            writer.println("[g] enemiesCollide:" + enemiesCollide);
+            writer.println(player.toString());
 
+            Iterator<Enemy> enemyIter = enemyList.iterator();
+            Iterator<Ally> allyIter = allyList.iterator();
+
+            while (enemyIter.hasNext()) {
+                Enemy enemy = enemyIter.next();
+                writer.println(enemy.toString());
+            }
+
+            while (allyIter.hasNext()) {
+                Ally ally = allyIter.next();
+                writer.println(ally.toString());
+            }
+
+            writer.close();
+        } catch (IOException ioe) {
+            System.out.println("File Not found CALL 911");
+        }
+    }
+
+    public void loadState() {
+        try {
+            FileReader file = new FileReader(saveFileName);
+            BufferedReader reader = new BufferedReader(file);
+            String line;
+            String attribute, typeofObject;
+            int i, x, y, width, height, direction, lives, points, speed;
+            String[] attributes;
+            ArrayList<String> enemyListData = new ArrayList<String>(), allyListData = new ArrayList<String>();
+
+            while ((line = reader.readLine()) != null) {
+                attributes = line.split(" ");
+                typeofObject = attributes[0];
+
+                switch (typeofObject) {
+                    case "[g]": // Reload global variables
+                        attribute = attributes[1].substring(0, attributes[1].indexOf(":"));
+                        switch (attribute) {
+                            case "maxEnemies":
+                                maxEnemies = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                                break;
+                            case "maxAllies":
+                                maxAllies = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                                break;
+                            case "enemiesCollide":
+                                enemiesCollide = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                                break;
+                        }
+                        break;
+                    case "[p]": // Reload player state
+                        direction = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                        lives = parseInt(attributes[2].substring(attributes[2].indexOf(":") + 1));
+                        points = parseInt(attributes[3].substring(attributes[3].indexOf(":") + 1));
+                        speed = parseInt(attributes[4].substring(attributes[4].indexOf(":") + 1));
+                        x = parseInt(attributes[5].substring(attributes[5].indexOf(":") + 1));
+                        y = parseInt(attributes[6].substring(attributes[6].indexOf(":") + 1));
+                        width = parseInt(attributes[7].substring(attributes[7].indexOf(":") + 1));
+                        height = parseInt(attributes[8].substring(attributes[8].indexOf(":") + 1));
+
+                        player = new Player(x, y, direction, width, height, lives, speed, this);
+                        player.setPoints(points);
+                        break;
+                    case "[e]":
+                        enemyListData.add(line);
+                        break;
+                    case "[a]":
+                        allyListData.add(line);
+                        break;
+                }
+            }
+
+            Iterator<Enemy> enemyIter = enemyList.iterator();
+            Iterator<Ally> allyIter = allyList.iterator();
+
+            i = 0;
+            while (enemyIter.hasNext() && i < enemyListData.size()) { // Reload enemies state
+                attributes = enemyListData.get(i).split(" ");
+                speed = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                x = parseInt(attributes[2].substring(attributes[2].indexOf(":") + 1));
+                y = parseInt(attributes[3].substring(attributes[3].indexOf(":") + 1));
+                width = parseInt(attributes[4].substring(attributes[4].indexOf(":") + 1));
+                height = parseInt(attributes[5].substring(attributes[5].indexOf(":") + 1));
+
+                enemyList.set(i, new Enemy(x, y, width, height, speed));
+                i++;
+                enemyIter.next();
+            }
+
+            i = 0;
+            while (allyIter.hasNext() && i < allyListData.size()) { // Reload allies state
+                attributes = allyListData.get(i).split(" ");
+                speed = parseInt(attributes[1].substring(attributes[1].indexOf(":") + 1));
+                x = parseInt(attributes[2].substring(attributes[2].indexOf(":") + 1));
+                y = parseInt(attributes[3].substring(attributes[3].indexOf(":") + 1));
+                width = parseInt(attributes[4].substring(attributes[4].indexOf(":") + 1));
+                height = parseInt(attributes[5].substring(attributes[5].indexOf(":") + 1));
+
+                allyList.set(i, new Ally(x, y, width, height, speed));
+                i++;
+                allyIter.next();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

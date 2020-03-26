@@ -5,7 +5,7 @@
  */
 package videogame;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 /**
  * @author Ernesto García
@@ -16,6 +16,11 @@ public class Enemy extends Item {
     public Enemy(int x, int y, int width, int height, int speed) {
         super(x, y, width, height);
         this.speed = speed;
+    }
+
+    @Override
+    public String toString() {
+        return "[e] speed:" + speed + " " + "x:" + x + " " + "y:" + y + " " + "width:" + width + " " + "height:" + height;
     }
 
     @Override

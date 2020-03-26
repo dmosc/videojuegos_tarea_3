@@ -40,39 +40,21 @@ public abstract class Item {
     }
 
     /**
-     * Get y value
-     *
-     * @return y
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * Get width value
-     *
-     * @return width
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Get height value
-     *
-     * @return height
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
      * Set x value
      *
      * @param x to modify
      */
     public void setX(int x) {
         this.x = x;
+    }
+
+    /**
+     * Get y value
+     *
+     * @return y
+     */
+    public int getY() {
+        return y;
     }
 
     /**
@@ -84,8 +66,26 @@ public abstract class Item {
         this.y = y;
     }
 
+    /**
+     * Get width value
+     *
+     * @return width
+     */
+    public int getWidth() {
+        return width;
+    }
+
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    /**
+     * Get height value
+     *
+     * @return height
+     */
+    public int getHeight() {
+        return height;
     }
 
     public void setHeight(int height) {

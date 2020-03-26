@@ -1,7 +1,6 @@
 package videogame;
 
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 /**
  * @author Ernesto García
@@ -29,20 +28,21 @@ public class Animation {
 
     /**
      * Getting the current frame to paint
+     *
      * @return the <code>BufferedImage</code> to the corresponding frame to paint
      */
-    public BufferedImage getCurrentFrame(){
+    public BufferedImage getCurrentFrame() {
         return frames[index];
     }
 
-    public void tick(){
+    public void tick() {
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        if(timer > speed){
+        if (timer > speed) {
             index++;
             timer = 0;
-            if(index >= frames.length){
+            if (index >= frames.length) {
                 index = 0;
             }
         }

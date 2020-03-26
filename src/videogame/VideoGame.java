@@ -6,7 +6,6 @@
 package videogame;
 
 /**
- *
  * @author antoniomejorado
  */
 public class VideoGame {
@@ -19,5 +18,4 @@ public class VideoGame {
         Game g = new Game("Juego", 800, 500);
         g.start();
     }
-    
 }

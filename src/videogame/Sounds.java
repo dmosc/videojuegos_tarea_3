@@ -12,7 +12,7 @@ public class Sounds {
 
     /**
      * initializing sounds
-    */
+     */
     public static void initialize() {
         hitPlayer = SoundLoader.loadSound("/sounds/hurt.mp3");
         pointPlayer = SoundLoader.loadSound("/sounds/point.mp3");

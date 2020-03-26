@@ -5,7 +5,7 @@
  */
 package videogame;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -18,7 +18,7 @@ public class Player extends Item {
     private int points;
     private int speed;
     private Game game;
-    private Animation animation[];
+    private Animation[] animation;
     private BufferedImage player;
 
     public Player(int x, int y, int direction, int width, int height, int lives, int speed, Game game) {
@@ -35,6 +35,11 @@ public class Player extends Item {
         }
     }
 
+    @Override
+    public String toString() {
+        return "[p] direction:" + direction + " " + "lives:" + lives + " " + "points:" + points + " " + "speed:" + speed + " " + "x:" + x + " " + "y:" + y + " " + "width:" + width + " " + "height:" + height;
+    }
+
     /**
      * Get direction value
      *
@@ -42,24 +47,6 @@ public class Player extends Item {
      */
     public int getDirection() {
         return direction;
-    }
-
-    /**
-     * Get points value
-     *
-     * @return points
-     */
-    public int getPoints() {
-        return points;
-    }
-
-    /**
-     * Get lives value
-     *
-     * @return lives
-     */
-    public int getLives() {
-        return lives;
     }
 
     /**
@@ -72,12 +59,12 @@ public class Player extends Item {
     }
 
     /**
-     * Set lives value
+     * Get points value
      *
-     * @param lives to modify
+     * @return points
      */
-    public void setLives(int lives) {
-        this.lives = lives;
+    public int getPoints() {
+        return points;
     }
 
     /**
@@ -87,6 +74,24 @@ public class Player extends Item {
      */
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    /**
+     * Get lives value
+     *
+     * @return lives
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Set lives value
+     *
+     * @param lives to modify
+     */
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
     @Override

@@ -12,16 +12,14 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 /**
- *
  * @author Ernesto García
  */
 public class SoundLoader extends Application {
 
     /**
      * to get a sound from the file path
+     *
      * @param path it is the path of the file
      * @return the <bold>MediaPlayer</bold> object
      */
